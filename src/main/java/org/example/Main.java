@@ -1,6 +1,5 @@
 package org.example;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -46,7 +45,6 @@ public class Main {
                 System.out.println(id + "번 글이 작성되었습니다.");
                 lastArticleId++;
             }
-
             else if (cmd.equals("article list")) {
                 System.out.println("==게시글 목록==");
                 if (articles.size() == 0) {
@@ -69,14 +67,7 @@ public class Main {
 
                     int id = Integer.parseInt(cmd.split(" ")[2]);
 
-                    Article foundArticle = null;
-
-                    for (Article article : articles) {
-                        if (article.getId() == id) {
-                            foundArticle = article;
-                            break;
-                        }
-                    }
+                    Article foundArticle = getArticleById(id);
 
                     if (foundArticle == null) {
                         System.out.println("없는 게시글입니다");
@@ -87,18 +78,12 @@ public class Main {
                         System.out.println("제목 : " + foundArticle.getTitle());
                         System.out.println("내용 : " + foundArticle.getBody());
                     }
-                } else if (cmd.startsWith("article delete")) {
+                }
+            else if (cmd.startsWith("article delete")) {
                     System.out.println("== 게시글 삭제 ==");
                     int id = Integer.parseInt(cmd.split(" ")[2]);
 
-                    Article foundArticle = null;
-
-                    for (Article article : articles) {
-                        if (article.getId() == id) {
-                            foundArticle = article;
-                            break;
-                        }
-                    }
+                    Article foundArticle = getArticleById(id);
 
                     if (foundArticle == null) {
                         System.out.println("없는 게시글입니다");
@@ -107,18 +92,12 @@ public class Main {
                         System.out.println(id + "번 게시글이 삭제 되었습니다.");
                     }
 
-                } else if (cmd.startsWith("article modify")) {
+                }
+            else if (cmd.startsWith("article modify")) {
                     System.out.println("== 게시글 수정 ==");
                     int id = Integer.parseInt(cmd.split(" ")[2]);
 
-                    Article foundArticle = null;
-
-                    for (Article article : articles) {
-                        if (article.getId() == id) {
-                            foundArticle = article;
-                            break;
-                        }
-                    }
+                    Article foundArticle = getArticleById(id);
 
                     if (foundArticle == null) {
                         System.out.println("없는 게시글입니다");
@@ -139,19 +118,36 @@ public class Main {
 
                         System.out.println(id + "번 게시글이 수정되었습니다");
                     }
-                } else {
+                }
+
+            else {
                     System.out.println("사용 할 수 없는 명령어입니다");
                 }
             }
         }
 
-        private static void makeTestData () {
+    /**
+     * 아이디 찾기
+     **/
+    private static Article getArticleById(int id) {
+        for (Article article : articles) {
+            if (article.getId() == id) {
+                return article;
+            }
+        } return null;
+    }
+
+    /**
+     * 테스트 데이터
+     */
+    private static void makeTestData () {
             System.out.println("테스트 데이터 만들기");
             articles.add(new Article(1, Util.getNowStr(), Util.getNowStr(), "테스트 제목", "테스트 제목"));
             articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "테스트 제목", "테스트 제목"));
             articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "테스트 제목", "테스트 제목"));
         }
     }
+// ---------------------------------------------------------------
 
 class Article {
     private int id;
